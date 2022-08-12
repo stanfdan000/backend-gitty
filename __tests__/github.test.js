@@ -3,6 +3,7 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 
+
 jest.mock('../lib/services/github');
 
 
@@ -20,7 +21,7 @@ describe('oauth routes', () => {
 
     expect(res.body).toEqual({
       id: expect.any(String),
-      userName: 'fake_github_user',
+      username: 'fake_github_user',
       email: '100@example.com',
       avatar: expect.any(String),
       iat: expect.any(Number),
@@ -28,19 +29,26 @@ describe('oauth routes', () => {
 
     });
   });
-
-
-
-
-
-
-
-
-
-
+    
+  it('#Delete should delete a users cookies', async () => {
+    const res = await request.agent(app)
+      .delete('/api/v1/github/sessions');
+    expect(res.body).toEqual({
+      success: true,
+      message: 'signed out'
+    });
+  });
+    
+    
 
 
   afterAll(() => {
     pool.end();
   });
+
+
+
+
+
+
 });
